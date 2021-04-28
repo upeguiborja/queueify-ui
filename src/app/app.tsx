@@ -7,6 +7,7 @@ const LoginRoute = React.lazy(() => import("./routes/login/login.route"));
 const RegisterRoute = React.lazy(
   () => import("./routes/register/register.route")
 );
+const HomeRoute = React.lazy(() => import("./routes/home/home.route"));
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Router>
         <Suspense fallback={<CircularProgress />}>
           <Switch>
+            <Route exact path="/" component={HomeRoute} />
             <Route exact path="/login" component={LoginRoute} />
             <Route exact path="/register" component={RegisterRoute} />
           </Switch>

@@ -1,0 +1,16 @@
+.message-component {
+  padding: 20px;
+  margin-bottom: 20px;
+
+  .content-message {
+    display: flex;
+  }
+
+  .content-message .icon-message {
+    margin-right: 20px;
+  }
+
+  .content-message .text-message {
+    flex: 1;
+  }
+}
