@@ -13,4 +13,4 @@ Services were build using inversify for dependency injection using
 inversify-react, thats why there are no functional components,
 even though i like them a lot.
 
-Dockerized build and container can be build if you ask me to do so :).
+Dockerized build and image can be done if you ask me to do so :).
