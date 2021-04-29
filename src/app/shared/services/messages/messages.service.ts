@@ -10,13 +10,8 @@ export class MessagesService {
     this.socket = io("localhost:5000"); //TODO: Use config
   }
 
-  public test(): void {
-    console.log("Injected");
-  }
-
   public sendMessage(message: any): void {
-    console.info("Sending Message");
-    this.socket.emit("msgToServer", { message: message });
+    this.socket.emit("clientMessage", message);
   }
 
   public onMessage(): Observable<any> {

@@ -33,16 +33,17 @@ export default class HomeRoute extends React.PureComponent<
   }
 
   componentDidMount() {
-    // const messageObservableStream = this.messagesService.onMessage();
+    const messageObservableStream = this.messagesService.onMessage();
 
-    // messageObservableStream.subscribe((m: any) => {
-    //   let messages = this.state.messages;
-    //   messages.push(m);
+    messageObservableStream.subscribe((m: any) => {
+      let messages = this.state.messages;
 
-    //   this.setState({ messages: messages });
-    // });
+      this.setState({ messages: [m, ...messages] });
+    });
+  }
 
-    this.messagesService.sendMessage("Lorem Ipsum");
+  componentWillUnmount() {
+    this.messagesService.disconnect();
   }
 
   render() {
@@ -57,10 +58,7 @@ export default class HomeRoute extends React.PureComponent<
         <Container component="main">
           <CssBaseline />
           {this.state.messages.map((item, key) => (
-            <MessageComponent
-              message={item.message}
-              key={key}
-            ></MessageComponent>
+            <MessageComponent message={item} key={key}></MessageComponent>
           ))}
         </Container>
       </div>
