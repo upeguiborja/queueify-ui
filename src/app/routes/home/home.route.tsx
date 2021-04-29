@@ -31,10 +31,6 @@ export default class HomeRoute extends React.PureComponent<
   private readonly authService!: AuthService;
 
   componentDidMount() {
-    if (!localStorage.getItem("token")) {
-      this.props.history.push("/login");
-    }
-
     const messageObservableStream = this.messagesService.onMessage();
 
     messageObservableStream.subscribe((m: any) => {
@@ -54,6 +50,10 @@ export default class HomeRoute extends React.PureComponent<
       isFetching: false,
       messages: [],
     };
+
+    if (!localStorage.getItem("token")) {
+      this.props.history.push("/login");
+    }
 
     this.handleLogout = this.handleLogout.bind(this);
   }

@@ -5,8 +5,6 @@ import { MessagesService } from "./messages/messages.service";
 
 // Services
 export const container = new Container();
-container
-  .bind<MessagesService>(MessagesService)
-  .toConstantValue(new MessagesService());
+container.bind<MessagesService>(MessagesService).to(MessagesService);
 
 container.bind<AuthService>(AuthService).toConstantValue(new AuthService());

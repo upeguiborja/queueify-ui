@@ -10,6 +10,11 @@ export class MessagesService {
     this.socket = io("localhost:5000"); //TODO: Use config
   }
 
+  public init(): MessagesService {
+    this.socket = io("localhost:50000");
+    return this;
+  }
+
   public sendMessage(message: any): void {
     this.socket.emit("clientMessage", message);
   }
