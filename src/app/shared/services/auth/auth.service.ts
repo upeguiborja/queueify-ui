@@ -22,6 +22,18 @@ export class AuthService {
       });
   }
 
+  public async register(email: string, password: string) {
+    return await axios
+      .post(API_URL + "/register", {
+        email: email,
+        password: password,
+      })
+      .then((response) => {
+        localStorage.removeItem("token");
+        return response.data;
+      });
+  }
+
   async logout() {
     localStorage.removeItem("token");
   }

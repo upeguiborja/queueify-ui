@@ -2,13 +2,17 @@ import React from "react";
 
 import { resolve } from "inversify-react";
 import { MessagesService } from "../../shared/services/messages/messages.service";
+import { AuthService } from "../../shared/services/auth/auth.service";
 
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { MessageComponent } from "../../shared/components/message/message.component";
+import { RouteComponentProps } from "react-router";
 
 import "./home.route.scss";
 
@@ -18,21 +22,19 @@ type HomeRouteState = {
 };
 
 export default class HomeRoute extends React.PureComponent<
-  any,
+  RouteComponentProps,
   HomeRouteState
 > {
   @resolve(MessagesService)
   private readonly messagesService!: MessagesService;
-
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      isFetching: false,
-      messages: [],
-    };
-  }
+  @resolve(AuthService)
+  private readonly authService!: AuthService;
 
   componentDidMount() {
+    if (!localStorage.getItem("token")) {
+      this.props.history.push("/login");
+    }
+
     const messageObservableStream = this.messagesService.onMessage();
 
     messageObservableStream.subscribe((m: any) => {
@@ -46,6 +48,21 @@ export default class HomeRoute extends React.PureComponent<
     this.messagesService.disconnect();
   }
 
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      isFetching: false,
+      messages: [],
+    };
+
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleLogout() {
+    this.authService.logout();
+    this.props.history.push("/login");
+  }
+
   render() {
     return (
       <div className="home-route">
@@ -53,6 +70,11 @@ export default class HomeRoute extends React.PureComponent<
           <Toolbar>
             <Typography variant="h6">Kafka Queue</Typography>
           </Toolbar>
+          <div>
+            <IconButton aria-label="logout" onClick={this.handleLogout}>
+              <ExitToAppIcon color="secondary" />
+            </IconButton>
+          </div>
         </AppBar>
 
         <Container component="main">
